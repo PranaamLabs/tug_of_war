@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard - Tug of War</title>
+
+    <style>
+
+        /* ==========================================
+           PAGE
+           ========================================== */
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+
+            background: #f4f4f9;
+
+            padding: 20px;
+
+            margin: 0;
+        }
+
+        .container {
+            max-width: 600px;
+
+            margin: 0 auto;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+
+        /* ==========================================
+           SETUP
+           ========================================== */
+
+        #setup-section {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 15px;
+        }
+
+        input {
+            padding: 10px;
+
+            font-size: 1.2rem;
+
+            text-align: center;
+
+            border: 2px solid #ddd;
+
+            border-radius: 5px;
+
+            box-sizing: border-box;
+        }
+
+
+        /* ==========================================
+           BUTTONS
+           ========================================== */
+
+        button {
+            padding: 15px;
+
+            font-size: 1.2rem;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            color: white;
+
+            font-weight: bold;
+        }
+
+        #connect-btn {
+            background-color: #333;
+        }
+
+        #start-btn {
+            background-color: #28a745;
+
+            width: 100%;
+
+            font-size: 1.5rem;
+
+            margin-top: 20px;
+        }
+
+        #start-btn:disabled {
+            background-color: #999;
+
+            cursor: not-allowed;
+        }
+
+
+        /* ==========================================
+           DASHBOARD
+           ========================================== */
+
+        #dashboard-section {
+            display: none;
+
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            padding: 20px;
+
+            border-radius: 10px;
+
+            font-size: 1.5rem;
+
+            font-weight: bold;
+
+            color: white;
+        }
+
+        .red-stats {
+            background-color: #ff4d4d;
+        }
+
+        .blue-stats {
+            background-color: #3399ff;
+        }
+
+
+        /* ==========================================
+           STATUS
+           ========================================== */
+
+        #admin-status {
+            margin-top: 20px;
+
+            font-size: 1.1rem;
+
+            color: #666;
+
+            min-height: 1.5em;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <h1>
+            Game Master Panel
+        </h1>
+
+
+        <!-- ======================================
+             SETUP
+             ====================================== -->
+
+        <div id="setup-section">
+
+            <input
+                type="text"
+                id="room-input"
+                placeholder="Enter Room ID (e.g., room_123)"
+                autocomplete="off"
+            >
+
+            <button id="connect-btn">
+                Open Room
+            </button>
+
+        </div>
+
+
+        <!-- ======================================
+             DASHBOARD
+             ====================================== -->
+
+        <div id="dashboard-section">
+
+            <h2>
+                Room:
+                <span id="display-room-id"></span>
+            </h2>
+
+
+            <!-- Player counts -->
+
+            <div class="stats-grid">
+
+                <div class="stat-box red-stats">
+                    Red Team
+                    <br>
+
+                    <span id="red-count">
+                        0
+                    </span>
+                </div>
+
+
+                <div class="stat-box blue-stats">
+                    Blue Team
+                    <br>
+
+                    <span id="blue-count">
+                        0
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!-- Game status -->
+
+            <div id="admin-status">
+                Waiting to start...
+            </div>
+
+
+            <!-- Start round -->
+
+            <button id="start-btn">
+                Start Round
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         JAVASCRIPT
+         ========================================== -->
+
+    <script src="/static/js/admin.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Join - Tug of War</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #222;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .join-card {
+            background-color: #333;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+            text-transform: uppercase;
+            border: 2px solid #555;
+            border-radius: 10px;
+            background-color: #222;
+            color: white;
+            margin-bottom: 30px;
+            box-sizing: border-box;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #fff;
+        }
+
+        .team-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 20px 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: transform 0.1s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .btn-red {
+            background-color: #ff4d4d;
+            box-shadow: 0 6px 0 #cc0000;
+        }
+
+        .btn-blue {
+            background-color: #3399ff;
+            box-shadow: 0 6px 0 #0066cc;
+        }
+
+        #error-msg {
+            color: #ff6b6b;
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="join-card">
+        <h1>Tug of War</h1>
+        
+        <input type="text" id="room-input" placeholder="Room Code" autocomplete="off">
+        
+        <div class="team-buttons">
+            <button class="btn-red" onclick="joinGame('red')">Join Red</button>
+            <button class="btn-blue" onclick="joinGame('blue')">Join Blue</button>
+        </div>
+
+        <div id="error-msg">Please enter a room code!</div>
+    </div>
+
+    <script>
+        function joinGame(team) {
+            const roomInput = document.getElementById('room-input');
+            const errorMsg = document.getElementById('error-msg');
+            
+            // Clean up the input (remove spaces, lowercase it for consistency)
+            const roomId = roomInput.value.trim().toLowerCase();
+
+            if (!roomId) {
+                errorMsg.style.display = 'block';
+                // Shake effect for visual feedback
+                roomInput.style.transform = 'translateX(-10px)';
+                setTimeout(() => roomInput.style.transform = 'translateX(10px)', 50);
+                setTimeout(() => roomInput.style.transform = 'translateX(0)', 100);
+                return;
+            }
+
+            // Redirect the browser to the FastAPI route we defined earlier
+            // e.g., /play/room123/red
+            window.location.href = `/play/${roomId}/${team}`;
+        }
+    </script>
+
+</body>
+</html>
