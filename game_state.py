@@ -188,6 +188,15 @@ class Room:
         self.rope_position = 0
         self.time_remaining = self.GAME_DURATION
 
+    @property
+    def is_empty(self) -> bool:
+        """Check if absolutely nobody is connected."""
+        return (
+            len(self.players["red"]) == 0
+            and len(self.players["blue"]) == 0
+            and len(self.admins) == 0
+        )
+
 
 class GameManager:
     def __init__(self):
@@ -198,6 +207,11 @@ class GameManager:
             self.active_rooms[room_id] = Room(room_id)
 
         return self.active_rooms[room_id]
+
+    def delete_room(self, room_id: str):
+        """Remove a room from the active rooms dictionary."""
+        if room_id in self.active_rooms:
+            del self.active_rooms[room_id]
 
 
 manager = GameManager()

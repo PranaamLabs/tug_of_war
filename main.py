@@ -4,6 +4,7 @@ import json
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+import uvicorn
 
 from game_state import manager
 
@@ -221,6 +222,18 @@ async def websocket_endpoint(
                     "blue_wins": room.blue_wins
                 })
 
+            # ==================================
+            # ADMIN: DELETE ROOM
+            # ==================================
+
+            elif event == "delete_room" and role == "admin":
+                
+                await room.broadcast({
+                    "event": "room_deleted"
+                })
+                
+                manager.delete_room(room_id)
+
 
     except WebSocketDisconnect:
 
@@ -230,25 +243,29 @@ async def websocket_endpoint(
             team
         )
 
-        # Tell everyone that a player left.
-        await room.broadcast({
-            "event": "player_left",
-            "team": team,
-            "counts": {
-                "red": len(room.players["red"]),
-                "blue": len(room.players["blue"])
-            }
-        })
+        # Automatic cleanup: if nobody is left, delete the room
+        if room.is_empty:
+            manager.delete_room(room_id)
+        else:
+            # Tell everyone that a player left.
+            await room.broadcast({
+                "event": "player_left",
+                "team": team,
+                "counts": {
+                    "red": len(room.players["red"]),
+                    "blue": len(room.players["blue"])
+                }
+            })
 
 
 # ==========================================
 # RUN SERVER
 # ==========================================
 
-# if __name__ == "__main__":
-#     uvicorn.run(
-#         "main:app",
-#         host="0.0.0.0",
-#         port=8000,
-#         reload=True
-#     )
+if __name__ == "__main__":
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True
+    )

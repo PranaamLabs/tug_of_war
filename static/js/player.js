@@ -196,6 +196,16 @@ ws.onmessage = (event) => {
         }
     }
 
+    // ------------------------------------------
+    // ROOM DELETED
+    // ------------------------------------------
+
+    else if (data.event === "room_deleted") {
+        tapButton.disabled = true;
+        statusDisplay.innerText = "Room was closed by the admin.";
+        ws.close();
+    }
+
 
     // ------------------------------------------
     // GAME RESET

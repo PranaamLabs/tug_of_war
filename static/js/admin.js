@@ -9,6 +9,7 @@ const roomInput = document.getElementById('room-input');
 const connectBtn = document.getElementById('connect-btn');
 
 const startBtn = document.getElementById('start-btn');
+const deleteRoomBtn = document.getElementById('delete-room-btn');
 
 const adminStatus = document.getElementById('admin-status');
 const displayRoomId = document.getElementById('display-room-id');
@@ -162,6 +163,16 @@ connectBtn.addEventListener('click', () => {
             }
         }
 
+        // ==================================
+        // ROOM DELETED
+        // ==================================
+
+        else if (data.event === "room_deleted") {
+            adminStatus.innerText = "Room deleted.";
+            startBtn.disabled = true;
+            deleteRoomBtn.disabled = true;
+            ws.close();
+        }
 
         // ==================================
         // RESET
@@ -259,4 +270,20 @@ startBtn.addEventListener('click', () => {
             }
 
         }, 1000);
+});
+
+// ==========================================
+// DELETE ROOM
+// ==========================================
+
+deleteRoomBtn.addEventListener('click', () => {
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+        return;
+    }
+
+    if (confirm("Are you sure you want to delete this room? Everyone will be disconnected.")) {
+        ws.send(JSON.stringify({
+            event: "delete_room"
+        }));
+    }
 });
